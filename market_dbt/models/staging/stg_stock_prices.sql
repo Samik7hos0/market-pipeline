@@ -1,3 +1,11 @@
+-- Staging model: stg_stock_prices
+-- Reads from raw.stock_prices (the table written by the Python loader).
+-- Responsibilities:
+--   1. Type-cast columns to their correct types (DATE, TIMESTAMP, FLOAT)
+--   2. Normalise the symbol string (trim whitespace, uppercase)
+--   3. Derive two business columns — daily_range and day_direction
+--   4. Filter out test records and rows with a zero close price
+
 WITH source AS (
     SELECT * FROM {{ source('raw', 'stock_prices') }}
 ),
@@ -18,19 +26,21 @@ cleaned AS (
         extracted_at::TIMESTAMP         AS extracted_at,
         loaded_at::TIMESTAMP            AS loaded_at,
 
-        -- Derived columns
+        -- High minus low gives the intraday price swing for the day
         ROUND(high - low, 2)            AS daily_range,
+
+        -- Label each day as a gain or loss based on the net change
         CASE
             WHEN change >= 0 THEN 'GAIN'
             ELSE 'LOSS'
         END                             AS day_direction,
 
-        -- Strip .BSE suffix for cleaner display
+        -- Remove the exchange suffix so downstream models show e.g. "RELIANCE" not "RELIANCE.BSE"
         REPLACE(UPPER(TRIM(symbol)), '.BSE', '') AS company_code
 
     FROM source
-    WHERE symbol != 'TEST.BSE'  -- exclude test data
-      AND close > 0
+    WHERE symbol != 'TEST.BSE'  -- exclude manual test inserts from the loader __main__ block
+      AND close > 0             -- guard against API returning zero prices
 )
 
 SELECT * FROM cleaned

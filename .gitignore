@@ -13,6 +13,7 @@ dist/
 build/
 
 # dbt
+target/
 market_dbt/target/
 market_dbt/logs/
 dbt_packages/

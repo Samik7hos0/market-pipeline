@@ -18,7 +18,7 @@ STOCKS = [
 
 def extract_stock_quote(symbol: str) -> dict:
     """Extract current quote for a single stock."""
-    url = f'https://www.alphavantage.co/query'
+    url = 'https://www.alphavantage.co/query'
     params = {
         'function': 'GLOBAL_QUOTE',
         'symbol': symbol,
