@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_stock_prices
+    description: "Cleaned stock prices from RAW layer"
+    columns:
+      - name: id
+        data_tests:
+          - not_null
+      - name: symbol
+        data_tests:
+          - not_null
+      - name: close
+        data_tests:
+          - not_null
+      - name: trading_day
+        data_tests:
+          - not_null
+      - name: day_direction
+        data_tests:
+          - accepted_values:
+              values: ['GAIN', 'LOSS']

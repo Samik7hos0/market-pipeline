@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw
+    database: DE_GRIND
+    schema: RAW
+    tables:
+      - name: stock_prices
+        description: "Raw daily stock prices from Alpha Vantage API"
