@@ -39,6 +39,7 @@ with DAG(
         task_id='dbt_run',
         bash_command=(
             'cd /opt/airflow/market_pipeline/market_dbt && '
+            'dbt clean && '
             'dbt run --profiles-dir /opt/airflow/dbt/.dbt'
         ),
     )

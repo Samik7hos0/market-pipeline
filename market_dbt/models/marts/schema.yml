@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: mart_daily_performance
+    description: "Daily stock performance with returns and momentum"
+    columns:
+      - name: symbol
+        data_tests:
+          - not_null
+      - name: close
+        data_tests:
+          - not_null
+      - name: momentum
+        data_tests:
+          - accepted_values:
+              values: ['BULLISH', 'BEARISH', 'NEUTRAL']
+      - name: trading_day
+        data_tests:
+          - not_null
+
+  - name: mart_moving_averages
+    description: "Moving averages and price signals"
+    columns:
+      - name: symbol
+        data_tests:
+          - not_null
+      - name: ma_3day
+        data_tests:
+          - not_null

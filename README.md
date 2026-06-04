@@ -53,7 +53,7 @@ RELIANCE.BSE, TCS.BSE, HDFCBANK.BSE, INFY.BSE, WIPRO.BSE
 
 ## Airflow Schedule
 
-Runs daily Monday–Friday at 06:00 IST (`0 6 * * 1-5`). Credentials are injected via Airflow Variables — no secrets in DAG code.
+`0 6 * * 1-5` — 06:00 IST, Monday–Friday. See Key Engineering Decisions below for the reasoning behind the schedule and secrets approach.
 
 ## Key Engineering Decisions
 

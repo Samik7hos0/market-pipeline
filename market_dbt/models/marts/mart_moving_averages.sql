@@ -10,6 +10,8 @@ WITH stg AS (
     SELECT * FROM {{ ref('stg_stock_prices') }}
 ),
 
+-- Compute all window functions here so price_vs_ma can reference ma_3day
+-- directly rather than repeating the full window expression
 moving_avgs AS (
     SELECT
         trading_day,
@@ -39,20 +41,22 @@ moving_avgs AS (
             PARTITION BY symbol
             ORDER BY trading_day
             ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
-        ), 0) AS avg_volume_3day,
-
-        -- Binary signal: is today's price above or below its own 3-day average?
-        -- Recomputes the same window as ma_3day — consistent by definition
-        CASE
-            WHEN close > AVG(close) OVER (
-                PARTITION BY symbol
-                ORDER BY trading_day
-                ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
-            ) THEN 'ABOVE_MA'
-            ELSE 'BELOW_MA'
-        END AS price_vs_ma
+        ), 0) AS avg_volume_3day
 
     FROM stg
+),
+
+-- Derived in a separate CTE so price_vs_ma compares close against the already-computed ma_3day
+-- instead of repeating the window function expression a second time
+with_signal AS (
+    SELECT
+        *,
+        -- Binary signal: is today's price above or below its own 3-day average?
+        CASE
+            WHEN close > ma_3day THEN 'ABOVE_MA'
+            ELSE 'BELOW_MA'
+        END AS price_vs_ma
+    FROM moving_avgs
 )
 
-SELECT * FROM moving_avgs
+SELECT * FROM with_signal
