@@ -14,6 +14,8 @@ Alpha Vantage API → Python (Extract) → Snowflake RAW → dbt (Transform) →
                                                           Orchestrated by Airflow
 ```
 
+![Architecture](Indian_Market_ELT_Pipeline_Architecture.png)
+
 ## Stack
 
 | Layer | Tool |
