@@ -1,8 +1,8 @@
 import pendulum
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from datetime import timedelta
 from airflow.models import Variable
+from datetime import timedelta
 
 default_args = {
     'owner': 'samik',
@@ -32,7 +32,12 @@ with DAG(
             'SNOWFLAKE_DATABASE': Variable.get('SNOWFLAKE_DATABASE'),
             'SNOWFLAKE_WAREHOUSE': Variable.get('SNOWFLAKE_WAREHOUSE'),
             'SNOWFLAKE_ROLE': Variable.get('SNOWFLAKE_ROLE'),
-        }
+            'AWS_ACCESS_KEY_ID': Variable.get('AWS_ACCESS_KEY_ID'),
+            'AWS_SECRET_ACCESS_KEY': Variable.get('AWS_SECRET_ACCESS_KEY'),
+            'AWS_REGION': Variable.get('AWS_REGION'),
+            'S3_BUCKET': Variable.get('S3_BUCKET'),
+        },
+        append_env=True,
     )
 
     dbt_run = BashOperator(
