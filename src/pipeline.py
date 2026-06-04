@@ -7,11 +7,12 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from src.extract.stock_extractor import extract_all_stocks
 from src.load.snowflake_loader import load_stocks
+from src.utils.s3_helper import upload_to_s3
 
 def run_pipeline():
     """
     Main ELT pipeline:
-    Extract from Alpha Vantage API → Load into Snowflake RAW
+    Extract from Alpha Vantage API → Load into Snowflake RAW → Backup to S3
     """
     print("=" * 50)
     print(f"🚀 Pipeline started: {datetime.now(UTC).isoformat()}")
@@ -30,6 +31,11 @@ def run_pipeline():
     # LOAD
     print("\n📤 LOAD — pushing to Snowflake RAW...")
     loaded = load_stocks(records)
+
+    # BACKUP TO S3
+    print("\n☁️ UPLOAD — backing up to S3...")
+    filename = f"stocks_{datetime.now(UTC).strftime('%Y%m%d')}.json"
+    upload_to_s3(records, 'raw', filename)
 
     print("\n" + "=" * 50)
     print(f"✅ Pipeline complete: {loaded} new records loaded")

@@ -1,28 +1,6 @@
-# Environment & secrets
 .env
-.env.*
-
-# Python
+target/
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-.Python
-*.egg-info/
-dist/
-build/
-
-# dbt
-target/
-market_dbt/target/
-market_dbt/logs/
-dbt_packages/
 .dbt/
-
-# Logs
 logs/
-*.log
-
-# OS
-.DS_Store
-Thumbs.db
