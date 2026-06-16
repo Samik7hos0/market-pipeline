@@ -32,7 +32,7 @@ def extract_stock_quote(symbol: str) -> dict:
     quote = data.get('Global Quote', {})
 
     if not quote:
-        print(f"⚠️ No data returned for {symbol}")
+        print(f"No data returned for {symbol}")
         return None
     
     return {
@@ -53,20 +53,20 @@ def extract_all_stocks() -> list:
     """Extract quotes for all tracked stocks."""
     results = []
     for i, symbol in enumerate(STOCKS):
-        print(f"🔄 Extracting {symbol}...")
+        print(f"Extracting {symbol}...")
         data = extract_stock_quote(symbol)
         if data:
             results.append(data)
-            print(f"✅ {symbol}: ₹{data['close']} | Change: {data['change_percent']}%")
+            print(f"{symbol}: ₹{data['close']} | Change: {data['change_percent']}%")
         
         # Rate limit: 5 calls/min on free tier
         if i < len(STOCKS) - 1:
-            print("⏳ Waiting 15s (rate limit)...")
+            print("Waiting 15s (rate limit)...")
             time.sleep(15)
     
     return results
 
 if __name__ == '__main__':
-    print(f"📈 Starting extraction — {datetime.now(UTC).isoformat()}")
+    print(f"Starting extraction — {datetime.now(UTC).isoformat()}")
     stocks = extract_all_stocks()
-    print(f"\n✅ Extracted {len(stocks)} stocks successfully")  
+    print(f"\n Extracted {len(stocks)} stocks successfully")  

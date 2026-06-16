@@ -36,7 +36,7 @@ def create_table_if_not_exists(cursor):
             loaded_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
         )
     """)
-    print("✅ Table raw.stock_prices ready")
+    print("Table raw.stock_prices ready")
 
 def is_duplicate(cursor, symbol: str, trading_day: str) -> bool:
     """Check if record already exists — incremental load logic."""
@@ -58,7 +58,7 @@ def load_stocks(records: list) -> int:
 
     for record in records:
         if is_duplicate(cursor, record['symbol'], record['trading_day']):
-            print(f"⏭️ Skipping {record['symbol']} {record['trading_day']} — already loaded")
+            print(f"⏭Skipping {record['symbol']} {record['trading_day']} — already loaded")
             skipped += 1
             continue
 
@@ -81,13 +81,13 @@ def load_stocks(records: list) -> int:
             record['extracted_at']
         ))
         loaded += 1
-        print(f"✅ Loaded {record['symbol']} — ₹{record['close']}")
+        print(f"Loaded {record['symbol']} — ₹{record['close']}")
 
     conn.commit()
     cursor.close()
     conn.close()
 
-    print(f"\n📊 Loaded: {loaded} | Skipped (duplicates): {skipped}")
+    print(f"\n Loaded: {loaded} | Skipped (duplicates): {skipped}")
     return loaded
 
 

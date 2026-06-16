@@ -15,31 +15,31 @@ def run_pipeline():
     Extract from Alpha Vantage API → Load into Snowflake RAW → Backup to S3
     """
     print("=" * 50)
-    print(f"🚀 Pipeline started: {datetime.now(UTC).isoformat()}")
+    print(f"Pipeline started: {datetime.now(UTC).isoformat()}")
     print("=" * 50)
 
     # EXTRACT
-    print("\n📥 EXTRACT — pulling from Alpha Vantage...")
+    print("\n EXTRACT — pulling from Alpha Vantage...")
     records = extract_all_stocks()
 
     if not records:
-        print("❌ No records extracted. Exiting.")
+        print("No records extracted. Exiting.")
         return
 
-    print(f"\n✅ Extracted {len(records)} records")
+    print(f"\n Extracted {len(records)} records")
 
     # LOAD
-    print("\n📤 LOAD — pushing to Snowflake RAW...")
+    print("\n LOAD — pushing to Snowflake RAW...")
     loaded = load_stocks(records)
 
     # BACKUP TO S3
-    print("\n☁️ UPLOAD — backing up to S3...")
+    print("\n UPLOAD — backing up to S3...")
     filename = f"stocks_{datetime.now(UTC).strftime('%Y%m%d')}.json"
     upload_to_s3(records, 'raw', filename)
 
     print("\n" + "=" * 50)
-    print(f"✅ Pipeline complete: {loaded} new records loaded")
-    print(f"⏰ Finished: {datetime.now(UTC).isoformat()}")
+    print(f"Pipeline complete: {loaded} new records loaded")
+    print(f"Finished: {datetime.now(UTC).isoformat()}")
     print("=" * 50)
 
 if __name__ == '__main__':

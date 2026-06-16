@@ -31,7 +31,7 @@ def upload_to_s3(data: list, folder: str, filename: str) -> str:
     )
 
     s3_path = f"s3://{bucket}/{key}"
-    print(f"✅ Uploaded to {s3_path}")
+    print(f"Uploaded to {s3_path}")
     return s3_path
 
 def  download_from_s3(folder: str, filename: str) -> list:
@@ -44,7 +44,7 @@ def  download_from_s3(folder: str, filename: str) -> list:
     response = s3.get_object(Bucket=bucket, Key=key)
     data = json.loads(response['Body'].read().decode('utf-8'))
     
-    print(f"✅ Downloaded {len(data)} records from s3://{bucket}/{key}")
+    print(f"Downloaded {len(data)} records from s3://{bucket}/{key}")
     return data
 
 def list_s3_files(folder: str) -> list:

@@ -10,7 +10,7 @@ def test_extract_returns_required_fields():
     result = extract_stock_quote('RELIANCE.BSE')
     
     if result is None:
-        print("⚠️ API rate limited — skipping test")
+        print("API rate limited — skipping test")
         return
     
     required_fields = ['symbol', 'open', 'high', 'low', 'close', 
@@ -21,26 +21,26 @@ def test_extract_returns_required_fields():
     
     assert result['close'] > 0, "Close price should be positive"
     assert result['volume'] > 0, "Volume should be positive"
-    print(f"✅ All fields present for {result['symbol']}")
+    print(f"All fields present for {result['symbol']}")
 
 def test_change_percent_is_numeric():
     """Test that change_percent can be converted to float."""
     result = extract_stock_quote('TCS.BSE')
     
     if result is None:
-        print("⚠️ API rate limited — skipping test")
+        print("API rate limited — skipping test")
         return
     
     try:
         float(result['change_percent'])
-        print("✅ change_percent is numeric")
+        print(" change_percent is numeric")
     except ValueError:
         assert False, "change_percent should be numeric"
 
 if __name__ == '__main__':
     test_extract_returns_required_fields()
-    print("⏳ Waiting for rate limit...")
+    print("Waiting for rate limit...")
     import time
     time.sleep(15)
     test_change_percent_is_numeric()
-    print("\n✅ All tests passed!")
+    print("\n All tests passed!")
